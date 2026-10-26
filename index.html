@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation de Mariage Élégante</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        burgundy: {
+                            DEFAULT: '#780000',
+                            dark: '#590000',
+                            light: '#8B0000',
+                        },
+                        gold: {
+                            DEFAULT: '#d4af37',
+                            light: '#f3e5ab',
+                            dark: '#aa771c',
+                        },
+                        cream: '#fcf8f2',
+                        tea: '#ccd5ae',
+                        papaya: '#faedcd',
+                        bronze: '#d4a373',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        garamond: ['Cormorant Garamond', 'serif'],
+                        script: ['Great Vibes', 'cursive'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .perspective-1200 {
+            perspective: 1200px;
+        }
+
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+
+        /* 3D Flap opening transition */
+        .envelope-flap {
+            transform-origin: top center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .envelope-flap.open {
+            transform: rotateX(180deg);
+            z-index: 5 !important;
+        }
+
+        /* Organic Wax Seal Styling */
+        .custom-wax-img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.4));
+          transition: transform 0.2s ease;
+        }
+
+        .wax-seal:hover .custom-wax-img {
+          transform: scale(1.08);
+        }
+
+        @keyframes crackAndDissolve {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); opacity: 0.8; filter: blur(1px); }
+            100% { transform: translate(-50%, -50%) scale(1.4) rotate(-15deg); opacity: 0; }
+        }
+
+        .wax-seal-crack {
+            animation: crackAndDissolve 0.4s ease forwards;
+        }
+
+        /* Background Art Deco Patterns */
+        .bg-art-deco {
+            background-color: #fdf0d5;
+            background-image: radial-gradient(#d4a373 0.75px, transparent 0.75px), radial-gradient(#d4a373 0.75px, #fdf0d5 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        .bg-lining-pattern {
+            background-color: #590000;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.25) 2px, transparent 2px),
+                linear-gradient(45deg, transparent 48%, rgba(212, 175, 55, 0.15) 50%, transparent 52%);
+            background-size: 20px 20px, 30px 30px;
+        }
+
+        .bg-card-pattern {
+            background-color: #fdf0d5;
+            background-image: radial-gradient(#d4a373 0.4px, transparent 0.4px);
+            background-size: 16px 16px;
+        }
+
+        /* Pulse Animation for Instruction */
+        @keyframes gentle-pulse {
+            0%, 100% { transform: translateY(0); opacity: 0.9; }
+            50% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        .pulse-instruction {
+            animation: gentle-pulse 2s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fcf8f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4a373;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-[#fdf0d5] font-sans antialiased text-gray-800 min-h-screen overflow-x-hidden select-none">
+    <!-- ========================================== -->
+    <!-- STAGE 1: REALISTIC INTERACTIVE ENVELOPE    -->
+    <!-- ========================================== -->
+    <div id="envelopeStage" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-art-deco transition-opacity duration-1000">
+        
+        <!-- Header Text -->
+<div id="headerText" class="text-center mb-6 sm:mb-10 z-10 px-4 transition-opacity duration-700">
+    <!-- Sous-titre du haut -->
+    <span class="font-sans text-xs sm:text-sm uppercase tracking-[0.3em] text-[#c1121f] mb-2 block font-medium">
+        Invitation de Mariage
+    </span>
+    
+    <!-- Titre principal (Noms des mariés) -->
+    <h1 class="font-script text-4xl sm:text-6xl text-[#520000] drop-shadow-sm">
+        Célia & Sofiane
+    </h1>
+    
+    <!-- Phrase d'accroche -->
+    <p class="font-garamond text-lg sm:text-xl text-[#df817a] italic tracking-wide mt-1">
+        Sont heureux de vous inviter à leur union
+    </p>
+</div>
+
+        <!-- 3D Realistic Envelope Container -->
+        <div class="perspective-1200 w-full max-w-[340px] sm:max-w-[460px] h-[220px] sm:h-[300px] relative cursor-pointer" id="envelopeWrapper">
+            
+            <!-- Envelope Main Shell -->
+            <div class="relative w-full h-full rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] preserve-3d">
+                
+                <!-- 1. Interior Pocket Lining -->
+                <div class="absolute inset-0 bg-lining-pattern rounded-2xl border border-gold/30 overflow-hidden shadow-inner z-0">
+                    <div class="absolute inset-2 border border-gold/20 rounded-xl pointer-events-none"></div>
+                </div>
+
+                <!-- 2. Interactive Invitation Card Inside (cachée au départ sous les rabats) -->
+                <div id="previewCard" class="absolute left-3 right-3 top-3 bottom-3 bg-cream rounded-xl p-5 shadow-2xl flex flex-col justify-center items-center text-center border-2 border-gold/40 z-10 transition-all duration-1000 ease-out transform translate-y-0">
+                    <div class="border border-gold/30 p-4 w-full h-full flex flex-col justify-center items-center rounded-lg bg-[radial-gradient(#d4af37_0.3px,transparent_0.3px)] [background-size:12px_12px]">
+                        <span class="font-sans text-[10px] sm:text-xs uppercase tracking-[0.25em] text-bronze font-semibold mb-1">Invitation Officielle</span>
+                        <h2 class="font-script text-3xl sm:text-4xl text-burgundy my-1">Célia & Sofiane</h2>
+                        <div class="w-12 h-0.5 bg-gold/50 my-2"></div>
+                        <p class="font-garamond text-xs sm:text-sm text-gray-700 italic">21 Novembre 2026 • Domaine des Rosiers</p>
+                    </div>
+                </div>
+
+                <!-- 3. Envelope Side & Bottom Pocket Flaps (par-dessus la carte pour la cacher) -->
+                <div class="absolute inset-0 z-20 pointer-events-none rounded-2xl overflow-hidden">
+                    <svg class="w-full h-full drop-shadow-[0_-2px_10px_rgba(0,0,0,0.4)]" viewBox="0 0 460 300" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="leftFlapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#8B0000" />
+                                <stop offset="100%" stop-color="#590000" />
+                            </linearGradient>
+                            <linearGradient id="rightFlapGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#8B0000" />
+                                <stop offset="100%" stop-color="#590000" />
+                            </linearGradient>
+                            <linearGradient id="bottomFlapGrad" x1="50%" y1="100%" x2="50%" y2="0%">
+                                <stop offset="0%" stop-color="#780000" />
+                                <stop offset="100%" stop-color="#590000" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M 0,0 L 210,150 L 0,300 Z" fill="url(#leftFlapGrad)" />
+                        <path d="M 460,0 L 250,150 L 460,300 Z" fill="url(#rightFlapGrad)" />
+                        <path d="M 0,300 L 230,135 L 460,300 Z" fill="url(#bottomFlapGrad)" />
+                        <path d="M 0,300 L 230,135 L 460,300" stroke="#d4af37" stroke-opacity="0.25" stroke-width="1" fill="none" />
+                    </svg>
+                </div>
+
+                <!-- 4. Top Triangular Opening Flap (Coins alignés sans dépassement) -->
+                <div id="topFlap" class="envelope-flap absolute top-0 left-0 right-0 h-[155px] sm:h-[195px] z-30 pointer-events-none rounded-t-2xl overflow-hidden">
+                    <svg class="w-full h-full filter drop-shadow-[0_8px_15px_rgba(0,0,0,0.6)]" viewBox="0 0 460 195" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="topFlapGrad" x1="50%" y1="0%" x2="50%" y2="100%">
+                                <stop offset="0%" stop-color="#8B0000" />
+                                <stop offset="100%" stop-color="#6e0000" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Triangle ajusté pour épouser parfaitement les coins superieurs -->
+                        <path d="M 0,0 L 460,0 L 230,190 Z" fill="url(#topFlapGrad)" />
+                        <path d="M 0,0 L 230,190 L 460,0" stroke="#d4af37" stroke-opacity="0.4" stroke-width="1.5" fill="none" />
+                    </svg>
+                </div>
+
+                <!-- 5. Sceau de cire au centre de l'enveloppe -->
+                <div class="wax-seal absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] w-30 h-30 sm:w-28 sm:h-30 z-50 cursor-pointer flex items-center justify-center" id="waxSeal">
+                    <img src="sceau.png" alt="Sceau de cire" class="custom-wax-img">
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tap Instruction CTA -->
+        <div id="tapInstruction" class="mt-8 sm:mt-12 z-10 flex items-center space-x-3 text-papaya pulse-instruction bg-burgundy-dark/60 backdrop-blur-md px-5 py-2.5 rounded-full border border-gold/30 shadow-lg">
+            <i class="fa-solid fa-hand-pointer text-gold animate-bounce"></i>
+            <span class="font-sans text-xs sm:text-sm tracking-widest uppercase font-medium">Appuyez pour ouvrir l'invitation</span>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- STAGE 2: MAIN EVENT LANDING PAGE           -->
+    <!-- ========================================== -->
+    <div id="mainPage" class="opacity-0 transition-opacity duration-1000 hidden min-h-screen bg-card-pattern pb-16">
+        
+        <!-- Sticky Navigation Header -->
+        <nav class="sticky top-0 z-40 bg-cream/90 backdrop-blur-md border-b border-papaya px-4 py-3 shadow-sm flex justify-between items-center max-w-5xl mx-auto rounded-b-2xl">
+            <span class="font-script text-2xl text-burgundy font-bold">Célia & Sofiane</span>
+            <button id="replayBtn" class="text-xs font-sans px-3.5 py-1.5 rounded-full bg-burgundy text-cream hover:bg-burgundy-light transition shadow flex items-center space-x-2">
+                <i class="fa-solid fa-envelope-open"></i>
+                <span>Revoir l'enveloppe</span>
+            </button>
+        </nav>
+
+        <!-- Hero Header -->
+        <header class="py-12 sm:py-16 px-4 text-center max-w-4xl mx-auto relative">
+            <div class="inline-block p-2 px-6 rounded-full bg-papaya/60 border border-gold/30 mb-6">
+                <p class="font-sans text-xs text-bronze uppercase tracking-[0.2em] font-semibold">Invitation Officielle de Mariage</p>
+            </div>
+            
+            <h1 class="font-script text-6xl sm:text-8xl text-burgundy mb-4 leading-tight">
+                Célia & Sofiane
+            </h1>
+            
+            <p class="font-garamond text-xl sm:text-2xl text-gray-700 italic max-w-2xl mx-auto mb-8">
+                « Deux âmes, un seul cœur. Nous serions honorés de vous compter parmi nous pour célébrer notre union. »
+            </p>
+
+            <div class="flex items-center justify-center space-x-4 text-gold">
+                <div class="h-[1px] w-12 sm:w-20 bg-gold"></div>
+                <i class="fa-solid fa-gem text-lg"></i>
+                <div class="h-[1px] w-12 sm:w-20 bg-gold"></div>
+            </div>
+        </header>
+
+        <!-- Countdown Section -->
+        <section class="max-w-4xl mx-auto px-4 mb-16">
+            <div class="bg-cream border-2 border-gold/30 rounded-3xl p-6 sm:p-10 shadow-xl text-center relative overflow-hidden">
+                <div class="absolute top-3 left-3 text-gold/30 text-2xl"><i class="fa-solid fa-crown"></i></div>
+                <div class="absolute top-3 right-3 text-gold/30 text-2xl"><i class="fa-solid fa-crown"></i></div>
+
+                <h2 class="font-serif text-2xl sm:text-3xl text-burgundy mb-1">Le Grand Jour</h2>
+                <p class="font-garamond text-xl sm:text-2xl text-bronze font-semibold mb-8">Samedi, 21 Novembre 2026</p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 max-w-xl mx-auto">
+                    <div class="bg-papaya/40 border border-gold/30 rounded-2xl p-4">
+                        <span id="cd-days" class="font-serif text-3xl sm:text-4xl text-burgundy font-bold block">00</span>
+                        <span class="font-sans text-xs text-bronze uppercase tracking-wider font-medium">Jours</span>
+                    </div>
+                    <div class="bg-papaya/40 border border-gold/30 rounded-2xl p-4">
+                        <span id="cd-hours" class="font-serif text-3xl sm:text-4xl text-burgundy font-bold block">00</span>
+                        <span class="font-sans text-xs text-bronze uppercase tracking-wider font-medium">Heures</span>
+                    </div>
+                    <div class="bg-papaya/40 border border-gold/30 rounded-2xl p-4">
+                        <span id="cd-minutes" class="font-serif text-3xl sm:text-4xl text-burgundy font-bold block">00</span>
+                        <span class="font-sans text-xs text-bronze uppercase tracking-wider font-medium">Minutes</span>
+                    </div>
+                    <div class="bg-papaya/40 border border-gold/30 rounded-2xl p-4">
+                        <span id="cd-seconds" class="font-serif text-3xl sm:text-4xl text-burgundy font-bold block">00</span>
+                        <span class="font-sans text-xs text-bronze uppercase tracking-wider font-medium">Secondes</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Venue / Location Section -->
+        <section class="max-w-4xl mx-auto px-4 mb-16">
+            <div class="bg-cream border border-gold/30 rounded-3xl p-6 sm:p-8 shadow-xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="font-sans text-xs uppercase tracking-widest text-bronze font-bold">Lieu d'exception</span>
+                        <h2 class="font-serif text-3xl text-burgundy my-2">Salle des fêtes Les Grands Vents</h2>
+                        <p class="font-garamond text-lg text-gray-700 mb-4">
+                             Route nationale, N36, Dely Ibrahim
+                        </p>
+                        <p class="text-sm text-gray-600 mb-6">
+                            Un parking privé et sécurisé est mis à la disposition de l'ensemble de nos invités.
+                        </p>
+                        <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-burgundy hover:bg-burgundy-light text-cream px-5 py-3 rounded-xl transition shadow-md font-sans text-sm font-medium">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span>Ouvrir dans Google Maps</span>
+                        </a>
+                    </div>
+                  
+                </div>
+            </div>
+        </section>
+        <!-- Welcome Message Section (Avant le Footer) -->
+        <section class="max-w-3xl mx-auto px-4 mb-16 text-center">
+            <div class="bg-papaya/40 border border-gold/30 rounded-3xl p-8 sm:p-10 shadow-lg relative overflow-hidden">
+                <!-- Ornements dorés décoratifs -->
+                <div class="text-gold/40 text-2xl mb-3">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                
+                <h2 class="font-script text-4xl sm:text-5xl text-[#3d0000] mb-3">
+                    Soyez les bienvenus !
+                </h2>
+                
+                <div class="w-16 h-0.5 bg-gold/50 mx-auto mb-4"></div>
+                
+                <p class="font-garamond text-lg sm:text-xl text-gray-700 italic max-w-xl mx-auto leading-relaxed">
+                    Votre présence à nos côtés rendra cette journée encore plus inoubliable. Nous avons si hâte de célébrer ce moment de bonheur entourés de tous ceux que nous aimons.
+                </p>
+                
+                <span class="inline-block mt-4 font-sans text-xs uppercase tracking-[0.2em] text-bronze font-semibold">
+                    Avec tout notre amour
+                </span>
+            </div>
+        </section>
+
+
+        <footer class="py-6 text-center text-xs text-bronze border-t border-papaya bg-cream/50">
+            <p class="font-script text-2xl text-burgundy mb-1">Célia & Sofiane</p>
+            <p class="font-sans">Invitation Digitale • 2026</p>
+        </footer>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- INTERACTIVE JAVASCRIPT & AUDIO LOGIC       -->
+    <!-- ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const envelopeWrapper = document.getElementById('envelopeWrapper');
+            const topFlap = document.getElementById('topFlap');
+            const waxSeal = document.getElementById('waxSeal');
+            const previewCard = document.getElementById('previewCard');
+            const envelopeStage = document.getElementById('envelopeStage');
+            const mainPage = document.getElementById('mainPage');
+            const tapInstruction = document.getElementById('tapInstruction');
+            const replayBtn = document.getElementById('replayBtn');
+            const rsvpForm = document.getElementById('rsvpForm');
+            const rsvpSuccess = document.getElementById('rsvpSuccess');
+
+            let isOpen = false;
+
+            // Sound FX
+            function playOpeningSound() {
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const bufferSize = audioCtx.sampleRate * 0.4;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 800;
+                    filter.Q.value = 3;
+
+                    const gain = audioCtx.createGain();
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    noise.start();
+                } catch (e) {}
+            }
+
+            // Confetti
+            function triggerGoldConfetti() {
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 60,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#d4af37', '#f3e5ab', '#aa771c', '#ffffff']
+                    });
+                }
+            }
+
+            // Opening Sequence
+            function openEnvelope() {
+                if (isOpen) return;
+                isOpen = true;
+
+                playOpeningSound();
+                const headerText = document.getElementById('headerText');
+                if (headerText) headerText.classList.add('opacity-0');
+
+                // 1. Craquer le sceau & cacher l'instruction
+                tapInstruction.classList.add('opacity-0');
+                waxSeal.classList.add('wax-seal-crack');
+
+                setTimeout(() => {
+                    // 2. Ouvrir le rabat supérieur (3D)
+                    topFlap.classList.add('open');
+                }, 300);
+
+                setTimeout(() => {
+                    // 3. Monter le z-index de la carte et la faire sortir vers le haut
+                    previewCard.style.zIndex = '35';
+                    previewCard.style.transform = 'translateY(-140px) scale(1.05)';
+                    triggerGoldConfetti();
+                }, 800);
+
+                setTimeout(() => {
+                    // 4. Transition vers la page principale
+                    envelopeStage.classList.add('opacity-0');
+                    setTimeout(() => {
+                        envelopeStage.classList.add('hidden');
+                        mainPage.classList.remove('hidden');
+                        setTimeout(() => {
+                            mainPage.classList.remove('opacity-0');
+                        }, 50);
+                    }, 1000);
+                }, 2100);
+            }
+
+            waxSeal.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openEnvelope();
+            });
+            envelopeWrapper.addEventListener('click', openEnvelope);
+
+            // Replay
+            replayBtn.addEventListener('click', () => {
+                isOpen = false;
+                mainPage.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    mainPage.classList.add('hidden');
+                    envelopeStage.classList.remove('hidden');
+                    
+                    // Réinitialiser la carte dans l'enveloppe
+                    topFlap.classList.remove('open');
+                    previewCard.style.zIndex = '10';
+                    previewCard.style.transform = 'translateY(0) scale(1)';
+                    waxSeal.classList.remove('wax-seal-crack');
+                    tapInstruction.classList.remove('opacity-0');
+
+                    setTimeout(() => {
+                        envelopeStage.classList.remove('opacity-0');
+                    }, 50);
+                }, 600);
+            });
+
+            // Countdown Timer
+            const targetDate = new Date('November 21, 2026 14:30:00').getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const difference = targetDate - now;
+
+                if (difference > 0) {
+                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                    document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                    document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+                    document.getElementById('cd-minutes').innerText = String(minutes).padStart(2, '0');
+                    document.getElementById('cd-seconds').innerText = String(seconds).padStart(2, '0');
+                }
+            }
+
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+
+            // RSVP Submission
+            rsvpForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                rsvpSuccess.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
